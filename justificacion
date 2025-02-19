@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación de Inasistencia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Justificación de Inasistencia</h1>
+  <form id="justificacionForm">
+    <label for="nombre">Nombre del Padre/Madre:</label>
+    <input type="text" id="nombre" name="nombre" required>
+
+    <label for="alumno">Nombre del Alumno:</label>
+    <input type="text" id="alumno" name="alumno" required>
+
+    <label for="fecha">Fecha de la Inasistencia:</label>
+    <input type="text" id="fecha" name="fecha" placeholder="Ej: 10/10/2023" required>
+
+    <label for="justificacion">Justificación:</label>
+    <textarea id="justificacion" name="justificacion" rows="4" required></textarea>
+
+    <button type="submit">Enviar Justificación</button>
+  </form>
+
+  <script>
+    document.getElementById('justificacionForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
+
+      // Obtener los datos del formulario
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
+
+      // Enviar los datos al backend (usaremos Google Apps Script o Formspree)
+      enviarDatos(data);
+    });
+
+function enviarDatos(data) {
+  fetch('https://script.google.com/macros/s/AKfycbzG68wfUu3PciZnXzAmsZAXiNmTGGfMPm2NoUsulqCLcqKe16rsl4Pw442LjTJerog/exec', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  .then(response => response.text())
+  .then(result => {
+    alert('Justificación enviada correctamente.');
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar la justificación.');
+  });
+}
+  </script>
+</body>
+</html>
